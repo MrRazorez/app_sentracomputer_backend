@@ -57,6 +57,7 @@ def sentraComputer() :
 
     for i in range(len(nama)) :
         tamp = {}
+        tamp["id"] = i
         tamp["href"] = "https://sentracomputer.com/"+gambar[i]
         tamp["title"] = nama[i]
         tamp["deskripsi"] = desk[i]
