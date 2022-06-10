@@ -50,7 +50,7 @@ def sentraComputer() :
     for i in temp :
       tulis = ""
       for j in i :
-        tulis += j + '\n'
+        tulis += j + '\n\n'
       desk.append(tulis)
 
     tampung = []
