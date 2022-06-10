@@ -13,31 +13,57 @@ def hello_world() :
 
 @app.route("/sentracomputer")
 def sentraComputer() :
-    url = "https://sentracomputer.com/product.php?category=21&subcat=2"
+    url = "https://sentracomputer.com/brand.php?brand=94"
     response = requests.request("GET", url)
 
+    hasil = {}
+
+    nama = []
+    gambar = []
+    desk = []
+
     data = BeautifulSoup(response.text, 'html.parser')
-    nameIs = data.find_all('span', attrs={'class': 'bigtitle'})
-    descIs = data.find_all('small')
-    descIs = descIs[82:]
+    data = data.find_all('td', attrs={'align': 'center'})
 
-    descript = []
+    for i in data:
+      nama.append(i.find('b').text)
+      try : 
+        gambar.append(i.find('a')['href'])
+      except :
+        gambar.append(i.find('img')['src'])
 
-    for i in descIs :
-        if i.text[0:2] != 'Pr' and i.text[0:2] != 'Rp' :  
-            descript.append(i.text)
-
+    data = BeautifulSoup(response.text, 'html.parser')
+    data = data.find_all('small')[83:]
     temp = []
+    tmp = []
 
-    for i in range(len(descript)) :
-        tampung = nameIs[i].find('a')
-        tmp = {}
-        tmp["href"] = "https://sentracomputer.com/"+tampung["href"]
-        tmp["title"] = tampung["title"]
-        tmp["deskripsi"] = descript[i]
+    j = 0
+    for i in data:
+      if i.text[:2] != 'Rp' :
+        j += 1
+        tmp.append(i.text)
+      else :
+        j = 0
         temp.append(tmp)
+        tmp = []
+
+    for i in temp :
+      tulis = ""
+      for j in i :
+        tulis += j + '\n'
+      desk.append(tulis)
+
+    tampung = []
+
+    for i in range(len(nama)) :
+        tamp = {}
+        tamp["href"] = "https://sentracomputer.com/"+gambar[i]
+        tamp["title"] = nama[i]
+        tamp["deskripsi"] = desk[i]
+        print(desk[i])
+        tampung.append(tamp)
         
     hasil = {}
-    hasil["laptop"] = temp
+    hasil["laptop"] = tampung
 
     return hasil
