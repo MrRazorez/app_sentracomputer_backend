@@ -21,6 +21,7 @@ def sentraComputer() :
     nama = []
     gambar = []
     desk = []
+    harga = []
 
     data = BeautifulSoup(response.text, 'html.parser')
     data = data.find_all('td', attrs={'align': 'center'})
@@ -53,6 +54,12 @@ def sentraComputer() :
         tulis += j + '\n\n'
       desk.append(tulis)
 
+    data = BeautifulSoup(response.text, 'html.parser')
+    data = data.find_all('span', attrs={'class': 'price'})
+    
+    for i in data :
+      harga.append(i.text)
+
     tampung = []
 
     for i in range(len(nama)) :
@@ -61,7 +68,7 @@ def sentraComputer() :
         tamp["href"] = "https://sentracomputer.com/"+gambar[i]
         tamp["title"] = nama[i]
         tamp["deskripsi"] = desk[i]
-        print(desk[i])
+        tamp["price"] = harga[i]
         tampung.append(tamp)
         
     hasil = {}
